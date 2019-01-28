@@ -206,7 +206,8 @@ class Phone {
     if(stage < 5 || stage > 6) {
       image(screenNormal, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
     } else {
-      image(screenOffBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
+      image(screenNormalBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
+      //image(screenOffBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
     }
     // image(screenOffBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
     
