@@ -1,12 +1,5 @@
 /*
-* Github: TODO
-* New p5.js project example that binds the sketch to a DIV and adjusts
-* the canvas size to fit into it respecting the predefined aspect ratio
-* if the ratio is defined
-*
-* Should the ratio NOT be defined the canvas will fit the whole parent DIV
-*
-* I'll be using this as my template for future new projects ...
+* Github: https://github.com/ogoossens/iPhone-Animation-p5
 */
 
 // Name of the DIV holding the sketch
@@ -22,26 +15,12 @@ let shards = [];
 let iPhone;
 
 // Animation Elements
-let stage = 2;
+let stage = 5;
 let stageSwapStarted;
 let stageDelays = [1, 1, 3000, 300, 100, 8000, 500, 600, 3000];
-
-/*
-* RATIO between the width and height
-* [WIDTH , HEIGHT] or 'null'
-*
-* If the RATIO is defined as 'null' it would always fill the whole DIV
-*
-* Examples:
-* RATIO 16:9 is [16, 9]
-* RATIO 1:1 (square) is [1, 1]
-* RATIO 'null' - always fill the whole parent DIV
-*/
 let sketchRatio = [1, 1];
 let sizeRatio = 1;
 let expectedWidth = 600;
-
-//let sketchRatio = null;
 
 function preload() {
   backPhone = loadImage(folderName + "/images/back.png");
@@ -60,22 +39,11 @@ function preload() {
 }
 
 function setup() {
-  // Create canvas
   let canvas = createCanvas();
-  
-  // Place the canvas into this DIV
   canvas.parent(divName);
-  
-  // Create Phone Element
   iPhone = new Phone();
-  
-  // Settings
   imageMode(CENTER);
-  
-  // Timing reset
   stageSwapStarted = millis();
-  
-  // Call the windowResized() function the first time to get the initial values for the canvas
   windowResized();
 }
 
@@ -106,6 +74,18 @@ function setStage(nr) {
   }
 }
 
+class Shard {
+  constructor(image, x, y) {
+    this.image = image;
+    this.def_X = x;
+    this.def_y = y;
+  }
+  
+  draw() {
+    image(this.image, this.def_X, this.def_y);
+  }
+}
+
 
 class Phone {
   constructor() {
@@ -119,11 +99,8 @@ class Phone {
     this.def_backShadowX = 430;
     this.def_backShadowY = 550;
     
-    this.def_shardsAdjustment = 300;
-    
     // System variables
     this.animationProgression = 1;
-    this.shardsRandomness = 0;
     this.swapDuration = 0;
     this.sinceSwapStarted = 0;
     this.animationFinished = false;
@@ -133,6 +110,10 @@ class Phone {
     this.frontShadowX = this.def_frontShadowX;
     this.backShadowX = this.def_backShadowX;
     this.backShadowY = this.def_backShadowY;
+    
+    // Shards
+    this.shards = [];
+    this.shards.push(new Shard(loadImage(folderName + "/images/s1.png"), 200, 200));
   }
   
   recalculate() {
@@ -153,9 +134,7 @@ class Phone {
       this.frontShadowY = this.def_frontShadowY[stage];
     }
     
-    // Shadows
-    
-    
+    /*
     // Shards
     // Stage 5 shards OUT
     if(stage == 5) {
@@ -170,6 +149,7 @@ class Phone {
       }
     }
     
+    // Stage 5 shards IN
     if(stage == 6) {
       if(this.animationFinished) {
         this.shardsPositionX = easeInQuad(this.sinceSwapStarted, this.def_shardsAdjustment, this.frontX - this.def_shardsAdjustment, this.swapDuration);
@@ -181,6 +161,7 @@ class Phone {
         this.shardsPositionX = this.frontX;
       }
     }
+    */
   }
   
   draw() {
@@ -209,50 +190,29 @@ class Phone {
       image(screenNormalBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
       //image(screenOffBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
     }
-    // image(screenOffBroken, this.frontX - 7, this.frontY, screenNormal.width / sizeRatio, screenNormal.height / sketchRatio);
     
     // Shards
     if(stage == 5 || stage == 6) {
-      for(let i = 0; i < shards.length; i++) {
-        image(shards[i], this.shardsPositionX - (i * 10) * this.shardsRandomness, this.frontY - (i * 2) * this.shardsRandomness, shards[i].width / sizeRatio, shards[i].height / sketchRatio);
+      
+      for(let i = 0; i < this.shards.length; i++) {
+        this.shards[i].draw();
       }
     }
   }
 }
 
 
-// Resized window. function that is ran every time a size of the windows changes
 function windowResized() {
-  
-  // Read the DIV current (new) size and adjust them to fit proportionally
   let tempWidth = document.getElementById(divName).offsetWidth;
   let tempHeight = document.getElementById(divName).offsetHeight;
-  
-  // Check if the ratio is defined, if not just use the new DIV dimensions
   if(!(sketchRatio == null)) {
-    
-    // Find out which one is smaller - we have to make that one FIT
-    // For this calculation we need to take the RATIO into consideration
     if(tempWidth * sketchRatio[1] > tempHeight * sketchRatio[0]) {
-      
-      // The WIDTH is bigger than 'allowed' and so we need to adjust that
-      // To do this we take the HEIGHT value and use that to calculate new WIDTH value
-      // We let the HEIGHT untouched
       tempWidth = tempHeight / sketchRatio[1] * sketchRatio[0];
-      
     } else {
-      
-      // The HEIGHT is bigger than 'allowed' and so we need to adjust that
-      // To do this we take the WIDTH value and use that to calculate new HEIGHT value
-      // This also runs if the ratios are "same" (1:1)
-      // We let the WIDTH untouched
       tempHeight = tempWidth / sketchRatio[0] * sketchRatio[1];
     }
   }
-  
-  // The calculation is done, the values are adjusted lets apply them
   resizeCanvas(tempWidth, tempHeight);
-  
   sizeRatio = expectedWidth / tempWidth;
 }
 
@@ -271,14 +231,15 @@ function easeOutQuad(t, b, c, d) {
   return -c * temp * (temp - 2) + b;
 }
 
-function easeOutExpo(currentIteration, startValue, changeInValue, totalIterations) {
-  return changeInValue * (-Math.pow(2, -10 * currentIteration / totalIterations) + 1) + startValue;
+function easeOutExpo(t, b, c, d) {
+  return c * (-Math.pow(2, -10 * t / d) + 1) + b;
 }
 
-function easeInExpo(currentIteration, startValue, changeInValue, totalIterations) {
-  return changeInValue * Math.pow(2, 10 * (currentIteration / totalIterations - 1)) + startValue;
+function easeInExpo(t, b, c, d) {
+  return c * Math.pow(2, 10 * (t / d - 1)) + b;
 }
 
+// Dev
 function mouseReleased() {
   nextStage();
 }
