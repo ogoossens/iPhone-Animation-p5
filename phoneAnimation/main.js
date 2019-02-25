@@ -54,6 +54,9 @@ function draw() {
   // background(220);
   
   iPhone.draw();
+  
+  // Button
+  // rect(140 / sizeRatio - infoImage1.width / sizeRatio / 2, 250 / sizeRatio - infoImage1.height / sizeRatio / 2, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
 }
 
 function nextStage() {
@@ -133,7 +136,7 @@ class Shard {
   
   recalc() {
     
-    let limit = 75;
+    let limit = 100 / sizeRatio;
     
     let currentPosition = createVector(this.target_x / sizeRatio, this.target_y / sizeRatio);
     let directionVector = createVector(mouseX - currentPosition.x, mouseY - currentPosition.y);
@@ -269,11 +272,11 @@ class Phone {
         
         break;
       case 5:
-        if(this.sinceSwapStarted > 0 && this.sinceSwapStarted < 10000) {
+        if(this.sinceSwapStarted < 8000) {
           image(infoImage2, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         }
         
-        if(this.sinceSwapStarted > 10000) {
+        if(this.sinceSwapStarted > 8000) {
           image(infoImage3, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         }
         
@@ -281,13 +284,10 @@ class Phone {
     }
     
     // Edit front and back positions X relative to mouseMovement
-    // Todo
-    this.backY = this.backY + sin(frameCount/2%360)*7*sizeRatio;
-  
+    this.backY = this.backY + sin(frameCount / 2 % 360) * 7 * sizeRatio;
     if(stage < 5 || stage > 6) {
-      this.frontY = this.frontY + sin(frameCount/2%360)*5*sizeRatio;
+      this.frontY = this.frontY + sin(frameCount / 2 % 360) * 5 * sizeRatio;
     }
-    
     
     // Phones
     image(backPhone, this.backX / sizeRatio, this.backY / sizeRatio, backPhone.width / sizeRatio, backPhone.height / sizeRatio);
@@ -358,8 +358,20 @@ function easeInExpo(t, b, c, d) {
   return c * Math.pow(2, 10 * (t / d - 1)) + b;
 }
 
+function pointInRect(pX, pY, rX, rY, rW, rH) {
+  return (pX >= rX && pX <= rX + rW && pY >= rY && pY <= rY + rH);
+}
+
 // Dev
 function mouseReleased() {
-  nextStage();
+  if(stage == 5 && iPhone.sinceSwapStarted > 8000) {
+    if(pointInRect(mouseX, mouseY, 140 / sizeRatio - infoImage1.width / sizeRatio / 2, 250 / sizeRatio - infoImage1.height / sizeRatio / 2, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio)) {
+      nextStage();
+    }
+  }
+  
+  if(stage == 8) {
+    nextStage();
+  }
 }
 
