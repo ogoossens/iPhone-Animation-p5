@@ -184,13 +184,16 @@ class Phone {
   constructor() {
     // Fixed Positions
     this.def_frontX = 470;
-    this.def_frontY = [1010, 1010, 310, 280, 330, 330, 330, 280, 310];
+    this.def_frontY = [1010, 1010, 290, 260, 310, 310, 310, 260, 290];
     this.def_backX = 405;
-    this.def_backY = [930, 1830, 230, 230, 230, 230, 230, 230, 230];
+    this.def_backY = [930, 1830, 220, 220, 220, 220, 220, 220, 220];
     this.def_frontShadowX = 430;
-    this.def_frontShadowY = [550, 550, 550, 558, 540, 540, 540, 558, 550];
+    this.def_frontShadowY = [530, 530, 530, 530, 520, 520, 520, 530, 530];
     this.def_backShadowX = 430;
-    this.def_backShadowY = 550;
+    this.def_backShadowY = 530;
+  
+    this.frontYlerp = 0;
+    this.backYlerp = 0;
     
     // System variables
     this.animationProgression = 1;
@@ -200,29 +203,30 @@ class Phone {
     
     this.frontX = this.def_frontX;
     this.backX = this.def_backX;
+    
     this.frontShadowX = this.def_frontShadowX;
     this.backShadowX = this.def_backShadowX;
     this.backShadowY = this.def_backShadowY;
     
     // Shards
     this.shards = [];
-    this.shards.push(new Shard(loadImage(folderName + "/images/s1.png"), 460, 350, 150, 280));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s2.png"), 500, 350, 180, 280));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s3.png"), 450, 450, 120, 450));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s4.png"), 450, 480, 110, 480));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s5.png"), 490, 430, 150, 430));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s6.png"), 473, 434, 123, 434));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s7.png"), 439, 417, 109, 417));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s8.png"), 475, 508, 125, 508));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s9.png"), 427, 382, 207, 352));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s10.png"), 475, 241, 225, 221));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s11.png"), 504, 526, 304, 506));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s12.png"), 467, 535, 227, 535));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s13.png"), 531, 436, 301, 406));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s14.png"), 531, 526, 301, 526));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s15.png"), 513, 435, 343, 435));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s16.png"), 531, 294, 311, 254));
-    this.shards.push(new Shard(loadImage(folderName + "/images/s17.png"), 429, 520, 239, 520));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s1.png"), 460, 340, 150, 270));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s2.png"), 500, 340, 180, 270));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s3.png"), 450, 440, 120, 440));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s4.png"), 450, 470, 110, 470));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s5.png"), 490, 420, 150, 420));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s6.png"), 473, 424, 123, 424));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s7.png"), 439, 407, 109, 407));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s8.png"), 475, 498, 125, 498));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s9.png"), 427, 372, 207, 342));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s10.png"), 475, 231, 225, 211));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s11.png"), 504, 516, 304, 496));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s12.png"), 467, 525, 227, 525));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s13.png"), 531, 426, 301, 396));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s14.png"), 531, 516, 301, 516));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s15.png"), 513, 425, 343, 425));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s16.png"), 531, 284, 311, 214));
+    this.shards.push(new Shard(loadImage(folderName + "/images/s17.png"), 429, 510, 239, 510));
   }
   
   recalculate() {
@@ -233,9 +237,14 @@ class Phone {
     this.animationProgression = map(this.sinceSwapStarted, 0, this.swapDuration, 0, 1);
     this.animationFinished = this.sinceSwapStarted < this.swapDuration;
     
-    if(this.animationFinished) {
-      this.frontY = easeOutExpo(this.sinceSwapStarted, this.def_frontY[stage - 1], this.def_frontY[stage] - this.def_frontY[stage - 1], this.swapDuration);
-      this.backY = easeOutExpo(this.sinceSwapStarted, this.def_backY[stage - 1], this.def_backY[stage] - this.def_backY[stage - 1], this.swapDuration);
+    // Have lerp on always
+    if(this.animationFinished || true) {
+      this.frontYlerp = lerp(this.frontYlerp, easeOutExpo(this.sinceSwapStarted, this.def_frontY[stage - 1], this.def_frontY[stage] - this.def_frontY[stage - 1], this.swapDuration), 0.5);
+      this.backYlerp = lerp(this.backYlerp, easeOutExpo(this.sinceSwapStarted, this.def_backY[stage - 1], this.def_backY[stage] - this.def_backY[stage - 1], this.swapDuration), 0.5);
+  
+      this.frontY = this.frontYlerp;
+      this.backY = this.backYlerp;
+      
       this.frontShadowY = easeOutExpo(this.sinceSwapStarted, this.def_frontShadowY[stage - 1], this.def_frontShadowY[stage] - this.def_frontShadowY[stage - 1], this.swapDuration);
     } else {
       this.frontY = this.def_frontY[stage];
