@@ -293,9 +293,9 @@ class Phone {
     }
     
     // Edit front and back positions X relative to mouseMovement
-    this.backY = this.backY + sin(frameCount / 2 % 360) * 7 * sizeRatio;
+    this.backY = this.backY + sin(frameCount / 2 % 360) * 4 * sizeRatio;
     if(stage < 5 || stage > 6) {
-      this.frontY = this.frontY + sin(frameCount / 2 % 360) * 5 * sizeRatio;
+      this.frontY = this.frontY + sin(frameCount / 2 % 360) * 3 * sizeRatio;
     }
     
     // Phones
