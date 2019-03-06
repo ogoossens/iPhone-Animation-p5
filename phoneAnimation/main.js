@@ -15,12 +15,14 @@ let infoImage1, infoImage2, infoImage3, infoImage4, infoImage5;
 let iPhone;
 
 // Animation Elements
-let stage = 2;
+let stage = 5;
 let stageSwapStarted;
 let stageDelays = [1, 1, 3000, 300, 100, 2000, 800, 600, 3000];
 let sketchRatio = [1, 1];
 let sizeRatio = 1;
 let expectedWidth = 600;
+
+let playTime = 6000;
 
 function preload() {
   backPhone = loadImage(folderName + "/images/back.png");
@@ -147,7 +149,7 @@ class Shard {
     // Percentage power
     let powerPercent = constrain(map(distanceToMouse, limit, 0, 0, 100), 0, 100);
     
-    let modifier = sizeRatio * powerPercent * -1 / 100;
+    let modifier = sizeRatio * powerPercent * -1 / 30;
     
     
     this.currentPowerVector.x = this.currentPowerVector.x / sizeRatio + normalDirVector.x * modifier;
@@ -173,8 +175,8 @@ class Shard {
     
     // Decrease
     
-    this.currentPowerVector.x = lerp(this.currentPowerVector.x, 0, 0.45);
-    this.currentPowerVector.y = lerp(this.currentPowerVector.y, 0, 0.45);
+    this.currentPowerVector.x = lerp(this.currentPowerVector.x, 0, 0.25);
+    this.currentPowerVector.y = lerp(this.currentPowerVector.y, 0, 0.25);
     
   }
 }
@@ -281,11 +283,11 @@ class Phone {
         
         break;
       case 5:
-        if(this.sinceSwapStarted < 8000) {
+        if(this.sinceSwapStarted < playTime) {
           image(infoImage2, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         }
         
-        if(this.sinceSwapStarted > 8000) {
+        if(this.sinceSwapStarted > playTime) {
           image(infoImage3, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         }
         
@@ -373,7 +375,7 @@ function pointInRect(pX, pY, rX, rY, rW, rH) {
 
 // Dev
 function mouseReleased() {
-  if(stage == 5 && iPhone.sinceSwapStarted > 8000) {
+  if(stage == 5 && iPhone.sinceSwapStarted > playTime) {
     if(pointInRect(mouseX, mouseY, 140 / sizeRatio - infoImage1.width / sizeRatio / 2, 250 / sizeRatio - infoImage1.height / sizeRatio / 2, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio)) {
       nextStage();
     }
