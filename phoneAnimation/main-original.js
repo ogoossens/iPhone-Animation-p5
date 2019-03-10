@@ -9,7 +9,7 @@ let folderName = "phoneAnimation";
 // Images
 let backPhone, frontPhone, backPhoneShadow, frontPhoneShadow;
 let screenNormal, screenNormalBroken, screenOffBroken;
-let infoImage1, infoImage2, infoImage3, infoImage4, infoImage5;
+let infoImage1, infoImage2, infoImage3, infoImage4;
 
 // Phone Element
 let iPhone;
@@ -36,9 +36,17 @@ function preload() {
   
   infoImage1 = loadImage(folderName + "/images/1.png");
   infoImage2 = loadImage(folderName + "/images/2.png");
-  infoImage3 = loadImage(folderName + "/images/3.png");
-  infoImage4 = loadImage(folderName + "/images/4.png");
-  infoImage5 = loadImage(folderName + "/images/5.png");
+  
+  
+  // Original
+  /*
+  infoImage3 = loadImage(folderName + "/images/3a.png");
+  infoImage4 = loadImage(folderName + "/images/4a.png");
+  */
+  
+    // New Version
+  infoImage3 = loadImage(folderName + "/images/3b.png");
+  infoImage4 = loadImage(folderName + "/images/4b.png");
 }
 
 function setup() {
@@ -278,7 +286,6 @@ class Phone {
         }
         break;
       case 8:
-        image(infoImage5, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         image(infoImage4, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
         
         break;

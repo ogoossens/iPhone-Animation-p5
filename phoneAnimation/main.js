@@ -1,7 +1,4 @@
-/*
-* Github: https://github.com/ogoossens/iPhone-Animation-p5
-*/
-
+"use strict";
 
 function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
 
@@ -20,7 +17,7 @@ var folderName = "phoneAnimation"; // Images
 
 var backPhone, frontPhone, backPhoneShadow, frontPhoneShadow;
 var screenNormal, screenNormalBroken, screenOffBroken;
-var infoImage1, infoImage2, infoImage3, infoImage4, infoImage5; // Phone Element
+var infoImage1, infoImage2, infoImage3, infoImage4; // Phone Element
 
 var iPhone; // Animation Elements
 
@@ -41,10 +38,16 @@ function preload() {
   screenNormalBroken = loadImage(folderName + "/images/screen-broken-color.png");
   screenOffBroken = loadImage(folderName + "/images/screen-broken-black.png");
   infoImage1 = loadImage(folderName + "/images/1.png");
-  infoImage2 = loadImage(folderName + "/images/2.png");
-  infoImage3 = loadImage(folderName + "/images/3.png");
-  infoImage4 = loadImage(folderName + "/images/4.png");
-  infoImage5 = loadImage(folderName + "/images/5.png");
+  infoImage2 = loadImage(folderName + "/images/2.png"); // Original
+  
+  /*
+  infoImage3 = loadImage(folderName + "/images/3a.png");
+  infoImage4 = loadImage(folderName + "/images/4a.png");
+  */
+  // New Version
+  
+  infoImage3 = loadImage(folderName + "/images/3b.png");
+  infoImage4 = loadImage(folderName + "/images/4b.png");
 }
 
 function setup() {
@@ -268,7 +271,6 @@ var Phone =
             break;
           
           case 8:
-            image(infoImage5, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
             image(infoImage4, 140 / sizeRatio, 250 / sizeRatio, infoImage1.width / sizeRatio, infoImage1.height / sizeRatio);
             break;
           
